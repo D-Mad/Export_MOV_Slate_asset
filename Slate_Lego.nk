@@ -1,0 +1,298 @@
+set cut_paste_input [stack 0]
+version 12.2 v5
+push $cut_paste_input
+Group {
+ name Slate_Lego
+ help "Simple Slate\n\n�Copyright:\nJonas Almeida.\n jgadpp.com \n2014"
+ selected true
+ xpos -842
+ ypos -32
+ addUserKnob {20 User l Slate}
+ addUserKnob {20 fonts_G l Fonts n 1}
+ addUserKnob {6 TextOn l Text t "Enable texts" +STARTLINE}
+ TextOn true
+ addUserKnob {20 endGroup n -1}
+ addUserKnob {26 ""}
+ addUserKnob {20 mask l Mask n 1}
+ addUserKnob {6 MaskOn l "Aspect Ratio" t "aspect ratio mask on/off" +STARTLINE}
+ MaskOn true
+ addUserKnob {7 MaskAspectRatio l "Aspec Ratio" t "Aspect ratio of the final picture frame" R 1.33 3}
+ MaskAspectRatio 1.93
+ addUserKnob {7 MaskOpacity l Opacity}
+ MaskOpacity 1
+ addUserKnob {26 line l Line}
+ addUserKnob {7 LineWeight l Weight}
+ LineWeight 5
+ addUserKnob {7 LineOpacity l Opacity}
+ LineOpacity 1
+ addUserKnob {20 endGroup_1 l endGroup n -1}
+ addUserKnob {26 ""}
+}
+ BackdropNode {
+  inputs 0
+  name Overlays
+  tile_color 0x457f49ff
+  label Overlays
+  note_font_size 42
+  xpos -333
+  ypos -230
+  bdwidth 1408
+  bdheight 611
+ }
+ BackdropNode {
+  inputs 0
+  name Testers
+  tile_color 0x7f761fff
+  label "Project size"
+  note_font_size 42
+  xpos -647
+  ypos -280
+  bdwidth 437
+  bdheight 211
+ }
+ Constant {
+  inputs 0
+  name Format
+  xpos -469
+  ypos -209
+ }
+ Reformat {
+  type "to box"
+  box_width {{"\[exists input]==1?input.format.w:root.format.w"}}
+  box_height {{"\[exists input]==1?input.format.h:root.format.h"}}
+  box_fixed true
+  box_pixel_aspect {{"\[exists input]==1?input.format.pixel_aspect:root.format.pixel_aspect"}}
+  resize distort
+  center false
+  filter impulse
+  name CurrentFormat
+  xpos -469
+  ypos -109
+ }
+ Input {
+  inputs 0
+  name Input1
+  xpos -68
+  ypos -261
+ }
+ Dot {
+  name Dot2
+  xpos -35
+  ypos -180
+ }
+set Ncfcc400 [stack 0]
+ Dot {
+  name Dot1
+  xpos -235
+  ypos -180
+ }
+ Dot {
+  name Dot3
+  xpos -235
+  ypos 320
+ }
+set Nccdb800 [stack 0]
+ Dot {
+  name Dot42
+  xpos -235
+  ypos 1020
+ }
+ Dot {
+  inputs 0
+  name Dot6
+  xpos 165
+  ypos -30
+ }
+set Nccdb000 [stack 0]
+ Dot {
+  name Dot56
+  xpos -35
+  ypos -30
+ }
+ Transform {
+  translate {0 {(Crop5.box.y)-LineWeight}}
+  black_outside false
+  name Transform3
+  xpos -69
+  ypos 15
+ }
+ Dot {
+  name Dot57
+  xpos -35
+  ypos 120
+ }
+push $Nccdb000
+ Dot {
+  name Dot55
+  xpos 365
+  ypos -30
+ }
+ Merge2 {
+  inputs 2
+  metainput A
+  name Merge2
+  xpos 331
+  ypos 115
+ }
+ Multiply {
+  channels rgba
+  value {{LineOpacity}}
+  name Multiply1
+  xpos 331
+  ypos 159
+ }
+ Dot {
+  name Dot5
+  xpos 365
+  ypos 220
+ }
+push $Ncfcc400
+ Dot {
+  name Dot38
+  xpos 565
+  ypos -180
+ }
+set Nccd9000 [stack 0]
+ Crop {
+  box {{"int(clamp((((\[exists input]==1?input.format.w:root.format.w)-(((\[exists input]==1?input.format.h:root.format.h)/(\[exists input]==1?input.format.pixel_aspect:root.format.pixel_aspect))*MaskAspectRatio))/2),0,(\[exists input]==1?input.format.w:root.format.w)))" x1 0} {"int(clamp((((\[exists input]==1?input.format.h:root.format.h)-(((\[exists input]==1?input.format.w:root.format.w)*(\[exists input]==1?input.format.pixel_aspect:root.format.pixel_aspect))/MaskAspectRatio))/2),0,(\[exists input]==1?input.format.h:root.format.h)))" x1 42} {"int(clamp((\[exists input]==1?input.format.w:root.format.w)-(((\[exists input]==1?input.format.w:root.format.w)-(((\[exists input]==1?input.format.h:root.format.h)/(\[exists input]==1?input.format.pixel_aspect:root.format.pixel_aspect))*MaskAspectRatio))/2),0,(\[exists input]==1?input.format.w:root.format.w)))" x1 1920} 1118}
+  name Crop5
+  xpos 531
+  ypos -137
+ }
+ Crop {
+  box {0 0 {CurrentFormat.box_width} {CurrentFormat.box_height}}
+  crop false
+  name Crop2
+  xpos 531
+  ypos 14
+ }
+ Dot {
+  name Dot4
+  xpos 565
+  ypos 120
+ }
+push $Nccd9000
+ Dot {
+  name Dot21
+  xpos 765
+  ypos -180
+ }
+ Dissolve {
+  inputs 2
+  which {{MaskOpacity}}
+  name Dissolve1
+  xpos 731
+  ypos 110
+  disable {{!parent.MaskOn.main x39 1 x42 1 x43 1}}
+ }
+ Merge2 {
+  inputs 2
+  bbox B
+  name lineopac
+  xpos 731
+  ypos 215
+ }
+push $Nccdb800
+ Switch {
+  inputs 2
+  which {{MaskOn}}
+  name MaskSwitch
+  xpos 731
+  ypos 310
+ }
+ Dot {
+  name Dot8
+  xpos 765
+  ypos 420
+ }
+set Nc8cec00 [stack 0]
+ Text {
+  message "\[python \{(nuke.dependencies(nuke.toNode('Slate_Lego'))\[0]\['file'].getValue()).split(\"/\")\[-1].replace('.mov', '',).split(\"_\")\[0] \}]  | \[python \{(nuke.dependencies(nuke.toNode('Slate_Lego'))\[0]\['file'].getValue()).split(\"/\")\[-1].replace('.mov', '',).split(\"_\")\[1] \}]_\[python \{(nuke.dependencies(nuke.toNode('Slate_Lego'))\[0]\['file'].getValue()).split(\"/\")\[-1].replace('.mov', '',).split(\"_\")\[2] \}]  |  \[python \{(nuke.dependencies(nuke.toNode('Slate_Lego'))\[0]\['file'].getValue()).split(\"/\")\[-1].replace('.mov', '',).split(\"_\")\[3] \}]\n"
+  font "\[python nuke.defaultFontPathname()]"
+  size {{NoOp1.font_size_1}}
+  yjustify bottom
+  Transform 1
+  box {{root.format.w/60} {int((root.format.h/2)/15)} {(root.format.w)-(root.format.w/20)} {int((root.format.h)-(root.format.h/1.1))}}
+  translate {0 {int((root.format.h-1134))}}
+  center {914 778}
+  name Text_L_L
+  xpos 731
+  ypos 696
+ }
+ Text {
+  message "\[format %04d \[frame]] \[python \{\"\[\"\}]\[format %04d \[frames first]]-\[format %04d \[frames last]]\[python \{\"]\"\}]\n"
+  font "\[python nuke.defaultFontPathname()]"
+  size {{NoOp1.font_size_1}}
+  xjustify center
+  yjustify bottom
+  Transform 1
+  box {{root.format.w/60} {int((root.format.h/2)/15)} {(root.format.w)-(root.format.w/20)} {int((root.format.h)-(root.format.h/1.1))}}
+  translate {0 {int((root.format.h-1134))}}
+  center {914 778}
+  name frame
+  xpos 731
+  ypos 748
+ }
+ Text {
+  message "\[python \{(nuke.dependencies(nuke.toNode('Slate_Lego'))\[0]\['file'].getValue()).split(\"/\")\[-1].replace('.mov', '',).split(\"_\")\[4].split(\"-\")\[1] \}] | \[python \{(nuke.dependencies(nuke.toNode('Slate_Lego'))\[0]\['file'].getValue()).split(\"/\")\[-1].replace('.mov', '',).split(\"_\")\[5] \}] | BADCLAY | \[date %Y-%m-%d]\n"
+  font "\[python nuke.defaultFontPathname()]"
+  size {{NoOp1.font_size_1}}
+  xjustify right
+  yjustify bottom
+  Transform 1
+  box {{root.format.w/60} {int((root.format.h/2)/15)} {(root.format.w)-(root.format.w/20)} {int((root.format.h)-(root.format.h/1.1))}}
+  translate {0 {int((root.format.h-1134))}}
+  center {914 778}
+  name right
+  selected true
+  xpos 731
+  ypos 812
+ }
+ NoOp {
+  name NoOp1
+  xpos 731
+  ypos 873
+  addUserKnob {20 User}
+  addUserKnob {7 font_size_1 l "Font Size" R 1 1000}
+  font_size_1 27
+ }
+push $Nc8cec00
+ Dot {
+  name Dot9
+  xpos 365
+  ypos 420
+ }
+ Dot {
+  name Dot7
+  xpos 365
+  ypos 970
+ }
+ Switch {
+  inputs 2
+  which {{TextOn}}
+  name TextSwitch
+  xpos 731
+  ypos 959
+ }
+ Switch {
+  inputs 2
+  which {{burnins}}
+  name BurnIns_Switch
+  xpos 731
+  ypos 1010
+  disable true
+ }
+ Crop {
+  box {0 0 {CurrentFormat.box_width.main} {CurrentFormat.box_height.main}}
+  crop false
+  name Crop1
+  xpos 731
+  ypos 1089
+  disable true
+ }
+ Output {
+  name Output1
+  xpos 731
+  ypos 1164
+ }
+end_group

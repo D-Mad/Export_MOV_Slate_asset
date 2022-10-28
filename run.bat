@@ -1,0 +1,1 @@
+"C:/Program Files/Nuke12.2v5/Nuke12.2.exe" -x convert.py D:/Newfolder/lf_pr_ropeDogAA_shd_review-turn_v001.mov D:/LEGO/DELIVERIES/client/toClient/20221025/printer3Dlf_pr_printer3D_mod_review-turn_v001.mov 1,72
